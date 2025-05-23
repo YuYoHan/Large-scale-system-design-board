@@ -25,6 +25,27 @@ explain select * from article where board_id = 1 order by article_id desc limit 
 select * from article where board_id = 1 order by article_id desc limit 30 offset 1499970;
 explain select * from article where board_id = 1 order by article_id desc limit 30 offset 1499970;
 
+# Covering Index 방법 사용
+select board_id, article_id from article where board_id = 1 order by article_id desc limit 30 offset 1499970;
+explain select board_id, article_id from article where board_id = 1 order by article_id desc limit 30 offset 1499970;
+
+# 추출된 30건의 article_id로 Clustered Index 접근
+select * from (
+    select article_id from article
+                      where board_id = 1
+                      order by article_id desc
+                      limit 30 offset 1499970
+              ) t left join article on t.article_id = article.article_id;
+explain select * from (
+    select article_id from article
+                      where board_id = 1
+                      order by article_id desc
+                      limit 30 offset 1499970
+              ) t left join article on t.article_id = article.article_id;
+
+
+
+
 
 create table board_article_count (
                                      board_id bigint not null primary key,
