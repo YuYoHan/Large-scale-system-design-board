@@ -7,7 +7,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://kuke-board-mysql:3306  # ? 'uri' ? 'url'? ?? ??
+    url: jdbc:mysql://localhost:3307/article
     username: root
     password: root
 

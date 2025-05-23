@@ -13,9 +13,6 @@ java {
     }
 }
 
-tasks.withType(Test).configureEach {
-    enabled = false
-}
 repositories {
     mavenCentral()
 }
