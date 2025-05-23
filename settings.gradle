@@ -1,16 +1,9 @@
 rootProject.name = 'Large-scale-system-design-board'
 
-// 실제 경로가 모두 service/ 하위에 있음
-include 'common'
-include 'article'
-include 'comment'
-include 'view'
-include 'like'
-include 'hot-article'
-include 'article-read'
+include 'common', 'common:snowflake', 'article', 'comment', 'view', 'like', 'hot-article', 'article-read'
 
-// 각각의 모듈 경로 지정
 project(':common').projectDir = file('service/common')
+project(':common:snowflake').projectDir = file('service/common/snowflake')
 project(':article').projectDir = file('service/article')
 project(':comment').projectDir = file('service/comment')
 project(':view').projectDir = file('service/view')
