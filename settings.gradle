@@ -2,8 +2,8 @@ rootProject.name = 'Large-scale-system-design-board'
 
 include 'common', 'common:snowflake', 'article', 'comment', 'view', 'like', 'hot-article', 'article-read'
 
-project(':common').projectDir = file('service/common')
-project(':common:snowflake').projectDir = file('service/common/snowflake')
+project(':common').projectDir = file('/common')
+project(':common:snowflake').projectDir = file('/common/snowflake')
 project(':article').projectDir = file('service/article')
 project(':comment').projectDir = file('service/comment')
 project(':view').projectDir = file('service/view')
