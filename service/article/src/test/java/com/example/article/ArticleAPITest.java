@@ -7,7 +7,10 @@ import lombok.Getter;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
+
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebClient
@@ -41,6 +44,7 @@ public class ArticleAPITest {
                 .retrieve();
     }
 
+
     @Test
     void readAllTest() {
         ArticlePageResponse response = restClient.get()
@@ -53,6 +57,20 @@ public class ArticleAPITest {
             System.out.println("articleId : " + article.getArticleId());
         }
     }
+
+    @Test
+    void readAllInfiniteScroll() {
+        List<ArticleResponse> articleResponseList = restClient.get()
+                .uri("/v1/articles/infinite-scroll?boardId=1&pageSize=5&lastArticleId=%s".formatted(184173647577194496L))
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
+                });
+        System.out.println("firstPage");
+        for (ArticleResponse articleResponse : articleResponseList) {
+            System.out.println("article response :" + articleResponse.getArticleId());
+        }
+    }
+
 
     ArticleResponse update(Long articleId, ArticleUpdateRequest request) {
         return restClient.put()
