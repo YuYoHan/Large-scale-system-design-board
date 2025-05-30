@@ -14,6 +14,14 @@ create table comment (
 
 create index idx_article_id_parent_comment_id_comment_id on comment(article_id asc, parent_comment_id asc, comment_id asc);
 
+select * from (
+                  select comment_id from comment
+                  where article_id = 1
+                  order by parent_comment_id asc, comment_id asc
+                  limit 30 offset 10
+              ) t left join comment on t.comment_id = comment.comment_id;
+
+
 create table comment_v2 (
                             comment_id bigint not null primary key,
                             content varchar(3000) not null,
