@@ -43,7 +43,7 @@ public class CommentApiTest {
     @Test
     void delete() {
         restClient.delete()
-                .uri("/v1/comments/{commentId}", 186373089862483968L)
+                .uri("/v1/comments/{commentId}", 186373090772647936L)
                 .retrieve();
     }
 
