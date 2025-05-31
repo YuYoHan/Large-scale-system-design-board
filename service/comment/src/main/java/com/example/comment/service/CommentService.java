@@ -34,6 +34,7 @@ public class CommentService {
         return CommentResponse.from(comment);
     }
 
+    // 부모 댓글 조회
     private Comment findParent(CommentCreateRequest request) {
         Long parentCommentId = request.getParentCommentId();
         if(parentCommentId == null) {
@@ -45,12 +46,16 @@ public class CommentService {
                 .orElseThrow();                             // 3. 둘 다 만족하지 않으면 예외 발생
     }
 
+    // 댓글 조회
+    @Transactional(readOnly = true)
     public CommentResponse read(Long commentId) {
         return CommentResponse.from(
                 commentRepository.findById(commentId).orElseThrow()
         );
     }
 
+    // 댓글 삭제
+    @Transactional
     public void delete(Long commentId) {
         commentRepository.findById(commentId)
                 .filter(Predicate.not(Comment::getDeleted))
@@ -63,10 +68,12 @@ public class CommentService {
                 });
     }
 
+    // 자식 댓글이 있는지 체크
     private boolean hasChildren(Comment comment) {
         return commentRepository.countBy(comment.getArticleId(), comment.getCommentId(), 2L) == 2;
     }
 
+    // 재귀 삭제로 부모 댓글이 소프트 삭제 상태면 부모 댓글 삭제해주고 자신도 삭제
     private void delete(Comment comment) {
         commentRepository.delete(comment);
 
@@ -78,6 +85,7 @@ public class CommentService {
         }
     }
 
+    // 무한 스크롤
     public CommentPageResponse readAll(Long articleId, Long page, Long pageSize) {
         return CommentPageResponse.of(
                 commentRepository.findAll(articleId, (page - 1) * pageSize, pageSize).stream()
@@ -87,6 +95,7 @@ public class CommentService {
         );
     }
 
+    // 무한 스크롤 - lastParentCommentId, lastCommentId 받고 처리
     public List<CommentResponse> readAll(Long articleId,
                                          Long lastParentCommentId,
                                          Long lastCommentId,
