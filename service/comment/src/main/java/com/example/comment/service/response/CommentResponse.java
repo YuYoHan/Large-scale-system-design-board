@@ -35,7 +35,7 @@ public class CommentResponse {
                 .build();
     }
 
-    // 무한 스크롤 때 처리
+    // 무한 depth 때 처리
     public static CommentResponse from(CommentV2 comment) {
         return CommentResponse.builder()
                 .commentId(comment.getCommentId())
