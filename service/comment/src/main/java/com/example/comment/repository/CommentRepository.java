@@ -40,6 +40,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             @Param("limit") Long limit
     );
 
+    // 댓글 count
     @Query(
             value = "select count(*) from (" +
                     "   select comment_id from comment where article_id = :article_id limit :limit" +
@@ -48,6 +49,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     )
     Long count(@Param("article_id") Long articleId, @Param("limit") Long limit);
 
+    // 무한 스크롤
     @Query(
             value = "select comment.comment_id, comment.content, comment.parent_comment_id, comment.article_id, " +
                     "comment.writer_id, comment.deleted, comment.created_at " +
@@ -62,6 +64,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             @org.springframework.data.repository.query.Param("limit") Long limit
     );
 
+    // 무한 스크롤 - 마지막 부모 댓글 id를 받아서 어디에 위치하는지 파악
     @Query(
             value = "select comment.comment_id, comment.content, comment.parent_comment_id, comment.article_id, " +
                     "comment.writer_id, comment.deleted, comment.created_at " +
