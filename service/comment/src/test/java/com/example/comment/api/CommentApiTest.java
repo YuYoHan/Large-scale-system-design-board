@@ -1,6 +1,7 @@
 package com.example.comment.api;
 
 
+import com.example.comment.service.response.CommentPageResponse;
 import com.example.comment.service.response.CommentResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,6 +46,56 @@ public class CommentApiTest {
         restClient.delete()
                 .uri("/v1/comments/{commentId}", 186373090772647936L)
                 .retrieve();
+    }
+
+    @Test
+    void readAll() {
+        CommentPageResponse response = restClient.get()
+                .uri("/v1/comments?articleId=1&pageSize=10")
+                .retrieve()
+                .body(CommentPageResponse.class);
+
+        System.out.println("response.getCommentCount() : " + response.getCommentCount());
+        for (CommentResponse comment : response.getComments()) {
+            if(!comment.getCommentId().equals(comment.getParentCommentId())) {
+                System.out.println("\t");
+            }
+            System.out.println("comment.getCommentId : " + comment.getCommentId());
+        }
+    }
+
+    @Test
+    void readAllInfiniteScroll() {
+        // first page
+        CommentPageResponse response = restClient.get()
+                .uri("/v1/comments/infinite-scroll?articleId=1&pageSize=10")
+                .retrieve()
+                .body(CommentPageResponse.class);
+
+        System.out.println("response.getCommentCount() : " + response.getCommentCount());
+
+        for (CommentResponse comment : response.getComments()) {
+            if(!comment.getCommentId().equals(comment.getParentCommentId())) {
+                System.out.println("\t");
+            }
+            System.out.println("comment.getCommentId : " + comment.getCommentId());
+        }
+
+
+        // second page
+        CommentPageResponse response2 = restClient.get()
+                .uri("/v1/comments/infinite-scroll?articleId=1&pageSize=10")
+                .retrieve()
+                .body(CommentPageResponse.class);
+
+        System.out.println("response.getCommentCount() : " + response.getCommentCount());
+
+        for (CommentResponse comment : response2.getComments()) {
+            if(!comment.getCommentId().equals(comment.getParentCommentId())) {
+                System.out.println("\t");
+            }
+            System.out.println("comment.getCommentId : " + comment.getCommentId());
+        }
     }
 
     @Getter
