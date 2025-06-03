@@ -1,3 +1,6 @@
+create database article_like;
+use article_like;
+
 create table article_like (
     article_like_id bigint not null primary key,
     article_id bigint not null,
