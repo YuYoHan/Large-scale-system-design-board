@@ -4,6 +4,7 @@ import com.example.comment.entity.Comment;
 import com.example.comment.entity.CommentPath;
 import com.example.comment.entity.CommentV2;
 import com.example.comment.repository.CommentRepositoryV2;
+import com.example.comment.service.PageLimitCalculator;
 import com.example.comment.service.request.CommentCreateRequestV2;
 import kuke.board.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
@@ -86,4 +87,16 @@ public class CommentServiceV2 {
                     .ifPresent(this::delete);
         }
     }
+
+    @Transactional
+    public CommentPageResponse readAll(Long articleId, Long page, Long pageSize) {
+        return CommentPageResponse.of(
+                commentRepository.findAll(articleId, (page -1) * pageSize, pageSize).stream()
+                        .map(CommentResponse::from)
+                        .toList(),
+                commentRepository.count(articleId, PageLimitCalculator.calculatePageLimit(page, pageSize, 10L))
+        );
+    }
+
+
 }
