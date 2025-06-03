@@ -54,6 +54,32 @@ public class CommentApiV2Test {
         }
     }
 
+    @Test
+    void readAllInfiniteScroll() {
+        CommentPageResponse response1 = restClient.get()
+                .uri("/v2/comments/infinite-scroll?articleId=1&pageSize=5")
+                .retrieve()
+                .body(CommentPageResponse.class);
+
+        System.out.println("first page");
+        System.out.println("response.getCommentCount() : " + response1.getCommentCount());
+        for (CommentResponse comment : response1.getComments()) {
+            System.out.println("comment.getCommentId : " + comment.getCommentId());
+        }
+
+        System.out.println("second page");
+        CommentPageResponse response2 = restClient.get()
+                .uri("/v2/comments/infinite-scroll?articleId=1&pageSize=5")
+                .retrieve()
+                .body(CommentPageResponse.class);
+
+        System.out.println("first page");
+        System.out.println("response.getCommentCount() : " + response2.getCommentCount());
+        for (CommentResponse comment : response2.getComments()) {
+            System.out.println("comment.getCommentId : " + comment.getCommentId());
+        }
+    }
+
     // 삭제 테스트
     @Test
     void delete() {
