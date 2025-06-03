@@ -1,6 +1,7 @@
 package com.example.comment.api;
 
 
+import com.example.comment.service.response.CommentPageResponse;
 import com.example.comment.service.response.CommentResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,6 +39,19 @@ public class CommentApiV2Test {
                 .retrieve()
                 .body(CommentResponse.class);
         System.out.println("response : " + response);
+    }
+
+    @Test
+    void readAll() {
+        CommentPageResponse response = restClient.get()
+                .uri("/v2/comments?articleId=1&pageSize=10&page=1")
+                .retrieve()
+                .body(CommentPageResponse.class);
+        System.out.println("response : "+ response);
+
+        for (CommentResponse comment : response.getComments()) {
+            System.out.println("comment.getCommentId : " + comment.getCommentId());
+        }
     }
 
     // 삭제 테스트
