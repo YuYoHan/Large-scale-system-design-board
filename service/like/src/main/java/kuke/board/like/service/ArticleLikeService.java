@@ -17,11 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ArticleLikeService {
-    private final Snowflake snowflake = new Snowflake();
-    private final OutboxEventPublisher outboxEventPublisher;
-    private final ArticleLikeRepository articleLikeRepository;
-    private final ArticleLikeCountRepository articleLikeCountRepository;
+    private final Snowflake snowflake = new Snowflake(); // 고유 ID 생성기
+    private final OutboxEventPublisher outboxEventPublisher; // 이벤트 발행기 (Outbox 패턴)
+    private final ArticleLikeRepository articleLikeRepository; // 좋아요 저장소
+    private final ArticleLikeCountRepository articleLikeCountRepository; // 좋아요 수 저장소
 
+
+    // 조회
+    @Transactional(readOnly = true)
     public ArticleLikeResponse read(Long articleId, Long userId) {
         return articleLikeRepository.findByArticleIdAndUserId(articleId, userId)
                 .map(ArticleLikeResponse::from)

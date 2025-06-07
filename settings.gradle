@@ -1,6 +1,7 @@
 rootProject.name = 'Large-scale-system-design-board'
 
-include 'common', 'common:snowflake', 'article', 'comment', 'view', 'like', 'hot-article', 'article-read'
+include 'common', 'common:snowflake', 'article', 'comment', 'view', 'like', 'hot-article', 'article-read', 'common:outbox-message-relay',
+        'common:event', 'common:data-serializer'
 
 project(':common').projectDir = file('/common')
 project(':common:snowflake').projectDir = file('/common/snowflake')
@@ -10,3 +11,7 @@ project(':view').projectDir = file('service/view')
 project(':like').projectDir = file('service/like')
 project(':hot-article').projectDir = file('service/hot-article')
 project(':article-read').projectDir = file('service/article-read')
+project(':common:outbox-message-relay').projectDir = file('common/outbox-message-relay')
+project(':common:event').projectDir = file('common/event')
+project(':common:data-serializer').projectDir = file('common/data-serializer')
+
